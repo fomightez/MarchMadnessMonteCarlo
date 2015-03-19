@@ -87,6 +87,8 @@ _rankings = [1,16,8,9,5,12,4,13,6,11,3,14,7,10,2,15]
 regional_rankings = {}
 for region in teams:
     for (team,rank) in zip(teams[region],_rankings):
+        # We use a random number here so that the south's number 2
+        # seed won't come out exactly the same rank as the west's.
         regional_rankings[team] = rank + random()/10
 
 regions = {}
@@ -100,3 +102,4 @@ teams['all'] = all_teams
 
 
 from Brackets import Bracket, simulate, runbracket1, runbracket2, playgame, maketable
+from Visualization import showstats

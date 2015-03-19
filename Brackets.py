@@ -442,18 +442,20 @@ class Stats:
         for team in counts:
             pct[team] = {}
             for r in ['2nd Round','3rd Round','Sweet 16','Elite 8','Final 4']:
-                pct[team][r] = counts[team][r]/nt1
+                pct[team][r] = 100*counts[team][r]/nt1
             for r in ['Championship','Win']:
-                pct[team][r] = counts[team][r]/nt2
+                pct[team][r] = 100*counts[team][r]/nt2
+            pct[team]['Region'] = MMMC.regions[team]
+            pct[team]['Rank'] = int(MMMC.regional_rankings[team])
         def tablekey(d):
             # gets teamname, pct
             return [d[1][i] for i in reversed(allrounds)]
         items = reversed(sorted(pct.items(),key=tablekey))
         # make a table
-        headers = ['Team'] + allrounds
+        headers = ['Team'] + ['Region','Rank'] + allrounds
         tabledata = []
         for (team,pcts) in items:
-            tabledata.append([team] + [pcts[i] for i in allrounds])
+            tabledata.append([team] + [pcts[i] for i in ['Region','Rank'] + allrounds])
         #return tabulate(tabledata, headers=headers, tablefmt="html" )
         return makehtmltable(tabledata, headers=headers)
 maketable = Stats.maketable
