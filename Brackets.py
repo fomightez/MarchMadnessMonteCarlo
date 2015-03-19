@@ -9,11 +9,11 @@ from numpy import exp,array,zeros,inf
 import scipy
 from time import sleep
 from copy import deepcopy
-from collections import Counter, OrderedDict
+from collections import Counter, OrderedDict, defaultdict
 #from decorators import memoized
 import MarchMadnessMonteCarlo as MMMC
 from MarchMadnessMonteCarlo import RankingsAndStrength as RAS
-from MarchMadnessMonteCarlo import Visualization
+from MarchMadnessMonteCarlo import Visualization, SimulationResults
 #from MarchMadnessMonteCarlo import Stats
 
 regional_rankings = MMMC.regional_rankings
@@ -137,8 +137,7 @@ def getroundmap(bracket, include_game_number):
     return round
 
 #@profile
-def simulate(ntrials, region, T, printonswap=False, showvis=True, newfig=True,
-             teamdesc=None, printbrackets=True):
+def simulate(ntrials, region, T, printonswap=False, printbrackets=True):
     """
     If region is "west" "midwest" "south" or "east" we'll run a bracket based 
     just on those teams.
@@ -197,50 +196,48 @@ def simulate(ntrials, region, T, printonswap=False, showvis=True, newfig=True,
 
     lb, mcb, mcb_count, unique_brackets, lowest_sightings = \
         Stats.gather_uniquestats(brackets)
-    if showvis:
-        Visualization.showstats(brackets, unique_brackets, lowest_sightings, 
-                                newfig=newfig, teamdesc=teamdesc)
+    sr = SimulationResults(brackets,unique_brackets,lb,lowest_sightings,mcb,mcb_count)
     if printbrackets:
         print "Lowest energy bracket"
         print lb
         print "Most common bracket (%s)"%mcb_count
         print mcb
-    return (lb,mcb,mcb_count)
+    return sr
 
 def runbracket1(ntrials, T):
-    simulate(ntrials,'all',T)
+    results = {'all':simulate(ntrials,'all',T)}
+    return results
 
 def runbracket2(ntrials1, ntrials2, T):
     results = {}
     regions = 'midwest west south east'.split()
     for (i,region) in enumerate(regions):
-        results[region] = simulate(ntrials1, region, T, newfig=i, 
-                                   teamdesc=region, printbrackets=False)
+        results[region] = simulate(ntrials1, region, T, printbrackets=False)
     # Make a new bracket from our final four
-    teams = [results[region][1].bracket[-1][0] for region in regions]
-    ff_lb, ff_mcb, ff_mcb_count = simulate(ntrials2, teams, T, newfig=i+1, 
-                                        teamdesc="Final Four",
-                                        printbrackets=False)
+    teams = [results[region].most_common_bracket.bracket[-1][0] for region in regions]
+#    ff_lb, ff_mcb, ff_mcb_count = simulate(ntrials2, teams, T, newfig=i+1, 
+    ff_sr = simulate(ntrials2, teams, T, printbrackets=False)
 
     print "YOUR LOWEST ENERGY BRACKETS"
     for region in regions:
         print "LOWEST ENERGY BRACKET FOR REGION", region
-        print results[region][0]
+        print results[region].lowest_bracket
         print
     print "LOWEST ENERGY BRACKET FOR FINAL FOUR"
-    print ff_lb
+    print ff_sr.lowest_bracket
         
     print "YOUR MOST COMMON BRACKETS"
     for region in regions:
         print "MOST COMMON BRACKET FOR REGION", region
-        print results[region][1]
-        print "number of times this bracket happened:",results[region][2]
+        print results[region].most_common_bracket
+        print "number of times this bracket happened:",results[region].most_common_bracket_count
         print 
         print
     print "MOST COMMON BRACKET FOR FINAL FOUR"
-    print ff_mcb
-    print "number of times this bracket happened:",ff_mcb_count
-
+    print ff_sr.most_common_bracket
+    print "number of times this bracket happened:",ff_sr.most_common_bracket_count
+    results['final four'] = ff_sr
+    return results
 
 
 class Bracket(object):
@@ -382,6 +379,21 @@ def bracket_to_string(all_winners):
 def print_bracket(bracket):
     print bracket_to_string(bracket)
 
+
+def makehtmltable(tabledata,headers):
+    result = '<table>\n'
+    result += '<tr>'
+    for header in headers:
+        result += '<th>{h}</th>'.format(h=header)
+    result += '</tr>\n'
+    for row in tabledata:
+        result += '<tr>'
+        for col in row:
+            result += '<td>{c}</td>'.format(c=col)
+        result += '</tr>\n'
+    result += '</table>'
+    return result
+
 class Stats:
     @staticmethod
     def gather_uniquestats(brackets):
@@ -401,3 +413,47 @@ class Stats:
         mcb = brackets_by_hash[h] # most comon bracket
         return lb, mcb, c, unique_brackets, lowest_sightings
 
+    @staticmethod
+    def maketable(results):
+        counts = defaultdict(Counter)
+        allrounds = ['2nd Round','3rd Round','Sweet 16','Elite 8','Final 4','Championship','Win']
+        rounds1 = ['2nd Round','3rd Round','Sweet 16','Elite 8','Final 4']
+        rounds2 = ['Championship','Win']
+        if 'all' not in results:
+            for region in 'south midwest east west'.split():
+                for bracket in results[region].brackets:
+                    for (name,num) in zip(rounds1,[0,1,2,3,4]):
+                        for team in bracket.bracket[num]:
+                            counts[team][name] += 1
+            for bracket in results['final four'].brackets:
+                for (name,num) in zip(rounds2,[1,2]):
+                    for team in bracket.bracket[num]:
+                        counts[team][name] += 1
+            nt1 = len(results['south'].brackets)
+            nt2 = len(results['final four'].brackets)
+        else:
+            for bracket in results['all'].brackets:
+                for (name,num) in zip(allrounds,[0,1,2,3,4,5,6]):
+                    for team in bracket.bracket[num]:
+                        counts[team][name] += 1
+            nt1 = nt2 = len(results['all'].brackets)
+        # Now turn that into percentages
+        pct = {}
+        for team in counts:
+            pct[team] = {}
+            for r in ['2nd Round','3rd Round','Sweet 16','Elite 8','Final 4']:
+                pct[team][r] = counts[team][r]/nt1
+            for r in ['Championship','Win']:
+                pct[team][r] = counts[team][r]/nt2
+        def tablekey(d):
+            # gets teamname, pct
+            return [d[1][i] for i in reversed(allrounds)]
+        items = reversed(sorted(pct.items(),key=tablekey))
+        # make a table
+        headers = ['Team'] + allrounds
+        tabledata = []
+        for (team,pcts) in items:
+            tabledata.append([team] + [pcts[i] for i in allrounds])
+        #return tabulate(tabledata, headers=headers, tablefmt="html" )
+        return makehtmltable(tabledata, headers=headers)
+maketable = Stats.maketable

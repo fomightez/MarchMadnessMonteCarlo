@@ -19,7 +19,7 @@ def movingaverage(interval, window_size):
     return convolve(interval, window, 'same')
 
 def plotone(brackets, label, subplot1, subplot2, values=None, label2=None, 
-            values2=None, teamdesc=None, useavg=False):
+            values2=None, description=None, useavg=False):
     """
     Plotting too many points causes lots of trouble for matplotlib. At
     the moment, we deal with that by plotting at most 50000 points,
@@ -38,7 +38,6 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
         step = divmod(len(values),maxpts)[0]
     else:
         step = 1
-    
     plt.subplot(subplot1)
     plt.plot(xrange(0,ntrials,step),values[::step],'.',label=label)
     if useavg:
@@ -53,9 +52,9 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
             
     plt.ylabel(label.capitalize())
     plt.xlabel('Game')
-    if teamdesc is not None:
+    if description is not None:
         plt.title('%s over the trajectory, T=%s, %s'%(label.capitalize(),
-                                                     brackets[0].T,teamdesc))
+                                                     brackets[0].T,description))
     else:
         plt.title('%s over the trajectory, T=%s'%(label.capitalize(),
                                                  brackets[0].T))
@@ -77,19 +76,12 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
                                                  brackets[0].T))
 
     
-def showstats(brackets, unique_brackets, lowest_sightings, newfig=True,
-              teamdesc=None,figsize=(15,8)):
-    if newfig is not False:
-        if newfig is True:
-            print "Here I am",figsize
-            plt.figure(figsize=figsize)
-        else:
-            plt.figure(newfig,figsize=figsize)
-    plt.clf()
-    plotone(brackets, 'energy', 231, 234, teamdesc=teamdesc)
-    plotone(brackets, 'upsets', 232, 235, teamdesc=teamdesc)
-    plotone(brackets, 'Unique brackets', 233, 236, values=unique_brackets,
-            label2="Lowest Energy Sightings", values2=lowest_sightings,
-            teamdesc=teamdesc)
+def showstats(sr,newfig=False,description='MMMC',figsize=(15,8)):
+    if newfig:
+        plt.figure(figsize=figsize)
+    plotone(sr.brackets, 'energy', 231, 234, description=description)
+    plotone(sr.brackets, 'upsets', 232, 235, description=description)
+    plotone(sr.brackets, 'Unique brackets', 233, 236, values=sr.unique_brackets,
+            label2="Lowest Energy Sightings", values2=sr.lowest_bracket_count,
+            description=description)
     plt.show()
-

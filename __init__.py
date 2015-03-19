@@ -12,6 +12,9 @@ Check out the blog post for a nice summary.
 __date__ = 2015
 __version__ = 0.2
 
+from collections import namedtuple
+SimulationResults = namedtuple('SimulationResults','brackets unique_brackets lowest_bracket lowest_bracket_count most_common_bracket most_common_bracket_count')
+
 from numpy.random import random #import only one function from somewhere
 #from Brackets import *
 #from Stats import *
@@ -56,15 +59,14 @@ if __date__ == 2013:
                      'Butler','Bucknell','Marquette','Davidson',
                      'Illinois','Colorado','Miami FL','Pacific']
 elif __date__ == 2015:
-    # Could be Hampton instead of Manhattan
-    teams['midwest'] = ['Kentucky','Manhattan','Cincinnati','Purdue',
+    teams['midwest'] = ['Kentucky','Hampton','Cincinnati','Purdue',
                         'West Virginia','Buffalo','Maryland','Valparaiso',
                         'Butler','Texas','Notre Dame','Northeastern',
                         'Wichita St.','Indiana','Kansas','New Mexico St.']
     # Could be MISS instead of BYU
     teams['west'] = ['Wisconsin','Coastal Carolina','Oregon','Oklahoma St.',
                      'Arkansas','Wofford','North Carolina','Harvard',
-                     'Xavier','BYU','Baylor','Georgia St.',
+                     'Xavier','Mississippi','Baylor','Georgia St.',
                      'VCU','Ohio St.','Arizona','Texas Southern',
                      ]
     # Could be Boise State instead of Dayton
@@ -97,4 +99,4 @@ all_teams = teams['midwest'] + teams['south'] + teams['west'] + teams['east']
 teams['all'] = all_teams
 
 
-from Brackets import Bracket, simulate, runbracket1, runbracket2, playgame
+from Brackets import Bracket, simulate, runbracket1, runbracket2, playgame, maketable

@@ -799,6 +799,7 @@ for line in text.split('\n'):
     for (name,value) in zip(lineparts,parts):
         team = parts[lineparts.index("Team")]
         team = sanitize_teamname(team)
+        #print "Processing",team
         if team not in kpomdata:
             kpomdata[team] = {}
         if name in textparts:
