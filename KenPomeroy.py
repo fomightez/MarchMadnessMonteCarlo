@@ -790,11 +790,11 @@ for line in text.split('\n'):
     if parts[0] in ["Strength of Schedule","Rank"]:
         continue
     if len(parts) != len(lineparts):
-        print "Could not parse the following line:"
-        print line
-        print zip(lineparts,parts)
-        print parts
-        print len(parts),len(lineparts)
+        print( "Could not parse the following line:")
+        print( line)
+        print( zip(lineparts,parts))
+        print( parts)
+        print( len(parts),len(lineparts))
         break
     for (name,value) in zip(lineparts,parts):
         team = parts[lineparts.index("Team")]
