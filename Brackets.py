@@ -47,12 +47,12 @@ def energy_of_flipping(current_winner, current_loser):
 deltaU = energy_of_flipping
 
 # Here are the "magic functions" I mentioned to get pairs of teams.
-from itertools import izip_longest
+from itertools import zip_longest
 def grouper(n, iterable, fillvalue=None):
     "Collect data into fixed-length chunks or blocks"
     # grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx
     args = [iter(iterable)] * n
-    return izip_longest(fillvalue=fillvalue, *args)
+    return zip_longest(fillvalue=fillvalue, *args)
 
 def pairs(iterable):
     return grouper(2,iterable)
@@ -80,9 +80,9 @@ def playgame(team1, team2, T):
 def playgamesfortesting(team1, team2, ntrials, T):
     print("Boltzmann tells that the ratio of team1 winning to team 2"+ 
           "winning should be")
-    print exp(-deltaU(team1,team2)/T)
+    print(exp(-deltaU(team1,team2)/T))
     wins = {team1:0,team2:0}
-    for i in xrange(ntrials):
+    for i in range(ntrials):
         winner,loser = playgame(team1,team2,T)
         wins[winner] = wins[winner] + 1
     print("wins {} {} {} {} {}".format(wins, wins[team1]/wins[team2], 
@@ -105,7 +105,7 @@ def runbracket(teams, T):
     nrounds = int(np.log2(len(teams)))
     winners = teams #they won to get here!
     all_winners = [winners]
-    for round in xrange(nrounds):
+    for round in range(nrounds):
         winners, losers = playround(winners, T)
         all_winners.append(winners)
     return all_winners
@@ -113,7 +113,7 @@ def runbracket(teams, T):
 
 def bracket_energy(all_winners):
     total_energy = 0.0
-    for i in xrange(len(all_winners)-1):
+    for i in range(len(all_winners)-1):
         games = pairs(all_winners[i])
         winners = all_winners[i+1]
         for (team1, team2),winner in zip(games, winners):
@@ -124,11 +124,11 @@ def bracket_energy(all_winners):
     return total_energy
 
 def getroundmap(bracket, include_game_number):
-    games_in_rounds = [2**i for i in reversed(xrange(len(bracket)-1))]
+    games_in_rounds = [2**i for i in reversed(range(len(bracket)-1))]
     round = {}
     g = 0
     for (i,gir) in enumerate(games_in_rounds):
-        for j in xrange(gir):
+        for j in range(gir):
             if include_game_number:
                 round[g] = (i,j)
             else:
@@ -170,7 +170,7 @@ def simulate(ntrials, region, T, printonswap=False, printbrackets=True):
     ng = sum(b.games_in_rounds) # total number of games
     # Let's collect some statistics
     brackets = []
-    for trial in xrange(ntrials):
+    for trial in range(ntrials):
         g = randint(0, ng) # choose a random game to swap
         #print "attempted swap for game",g#,"in round",round[g]
         #newbracket = deepcopy(b)
@@ -182,15 +182,15 @@ def simulate(ntrials, region, T, printonswap=False, printbrackets=True):
             b = newbracket
             energy = newenergy
             if printonswap:
-                print "LOWER"
-                print b
+                print("LOWER")
+                print(b)
         else:
             if random() < exp(-ediff/T):
                 b = newbracket
                 energy = newenergy
                 if printonswap:
-                    print "HIGHER"
-                    print b
+                    print( "HIGHER")
+                    print(b)
         brackets.append(b)
 
 
@@ -198,10 +198,10 @@ def simulate(ntrials, region, T, printonswap=False, printbrackets=True):
         Stats.gather_uniquestats(brackets)
     sr = SimulationResults(brackets,unique_brackets,lb,lowest_sightings,mcb,mcb_count)
     if printbrackets:
-        print "Lowest energy bracket"
-        print lb
-        print "Most common bracket (%s)"%mcb_count
-        print mcb
+        print("Lowest energy bracket")
+        print(lb)
+        print("Most common bracket (%s)"%mcb_count)
+        print(mcb)
     return sr
 
 def runbracket1(ntrials, T):
@@ -218,24 +218,24 @@ def runbracket2(ntrials1, ntrials2, T):
 #    ff_lb, ff_mcb, ff_mcb_count = simulate(ntrials2, teams, T, newfig=i+1, 
     ff_sr = simulate(ntrials2, teams, T, printbrackets=False)
 
-    print "YOUR LOWEST ENERGY BRACKETS"
+    print("YOUR LOWEST ENERGY BRACKETS")
     for region in regions:
-        print "LOWEST ENERGY BRACKET FOR REGION", region
-        print results[region].lowest_bracket
-        print
-    print "LOWEST ENERGY BRACKET FOR FINAL FOUR"
-    print ff_sr.lowest_bracket
+        print("LOWEST ENERGY BRACKET FOR REGION", region)
+        print(results[region].lowest_bracket)
+        print()
+    print( "LOWEST ENERGY BRACKET FOR FINAL FOUR")
+    print( ff_sr.lowest_bracket)
         
-    print "YOUR MOST COMMON BRACKETS"
+    print( "YOUR MOST COMMON BRACKETS")
     for region in regions:
-        print "MOST COMMON BRACKET FOR REGION", region
-        print results[region].most_common_bracket
-        print "number of times this bracket happened:",results[region].most_common_bracket_count
-        print 
-        print
-    print "MOST COMMON BRACKET FOR FINAL FOUR"
-    print ff_sr.most_common_bracket
-    print "number of times this bracket happened:",ff_sr.most_common_bracket_count
+        print("MOST COMMON BRACKET FOR REGION", region)
+        print(results[region].most_common_bracket)
+        print("number of times this bracket happened:",results[region].most_common_bracket_count)
+        print()
+        print()
+    print( "MOST COMMON BRACKET FOR FINAL FOUR")
+    print( ff_sr.most_common_bracket)
+    print( "number of times this bracket happened:",ff_sr.most_common_bracket_count)
     results['final four'] = ff_sr
     return results
 
@@ -255,7 +255,7 @@ class Bracket(object):
         else:
             self.bracket = bracket
         self.games_in_rounds = [2**i for i in 
-                                reversed(xrange(len(self.bracket)-1))]
+                                reversed(range(len(self.bracket)-1))]
         self.roundmap = getroundmap(self.bracket, include_game_number=False)
         self.roundmap_with_game_numbers = getroundmap(self.bracket, 
                                                       include_game_number=True)
@@ -313,7 +313,7 @@ class Bracket(object):
             ng = self._round_teaminround_to_game(wr, wt)
     def upsets(self):
         result = 0
-        for g in xrange(sum(self.games_in_rounds)):
+        for g in range(sum(self.games_in_rounds)):
             t1,t2,win = self.game(g)
             if t1 == win:
                 los = t2
@@ -333,21 +333,21 @@ def bracket_to_string(all_winners):
     # will just get truncated.
     maxlen = max([len(s) for s in all_winners[0]])
     dt = np.dtype([('name', np.str_, maxlen)])
-    results = array([['' for i in xrange(len(all_winners[0]))] for j in 
-                     xrange(nrounds)], dtype=dt['name'])
+    results = array([['' for i in range(len(all_winners[0]))] for j in 
+                     range(nrounds)], dtype=dt['name'])
     # First round, all of the spots are filled
     results[0] = all_winners[0]
     # all other rounds, we split the row in half and fill from the middle out.
-    for i in xrange(1, nrounds): # we've done the 1st and last already
+    for i in range(1, nrounds): # we've done the 1st and last already
         # round 1 skips two, round 2 skips 4, etc.
         these_winners = all_winners[i]
         # Fill top half
-        idx = len(all_winners[0])/2 - 1
+        idx = int(len(all_winners[0])/2 - 1)
         for team in reversed(all_winners[i][:int(len(all_winners[i])/2)]):
             results[i][idx] = team
             idx -= 2**i
         # Fill bottom half
-        idx = len(all_winners[0])/2
+        idx = int(len(all_winners[0])/2)
         for team in all_winners[i][int(len(all_winners[i])/2):]:
             results[i][idx] = team
             idx += 2**i
@@ -366,7 +366,7 @@ def bracket_to_string(all_winners):
                 result = '%s'%(team)
         return result
     stub = '%-25s ' + ' '.join(['%-8s']*(nrounds-1))
-    for i in xrange(len(all_winners[0])):
+    for i in range(len(all_winners[0])):
         these = results[:,i]
         these = [tr(these[0], include_rank=True)] + \
             [tr(i, maxlen=3, include_rank=True) for i in these[1:]]
@@ -377,7 +377,7 @@ def bracket_to_string(all_winners):
     return result
 
 def print_bracket(bracket):
-    print bracket_to_string(bracket)
+    print( bracket_to_string(bracket))
 
 
 def makehtmltable(tabledata,headers):

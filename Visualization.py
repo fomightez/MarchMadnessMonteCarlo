@@ -39,7 +39,7 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
     else:
         step = 1
     plt.subplot(subplot1)
-    plt.plot(xrange(0,ntrials,step),values[::step],'.',label=label)
+    plt.plot(range(0,ntrials,step),values[::step],'.',label=label)
     if useavg:
         # want something like 2000 windows
         if step > 1:
@@ -48,7 +48,7 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
             npts = len(values)
         avgstep = divmod(len(values),int(npts/25))[0]
         
-        plt.plot(xrange(0,ntrials,step),movingaverage(values[::step],avgstep),'-',label='avg. '+label)
+        plt.plot(range(0,ntrials,step),movingaverage(values[::step],avgstep),'-',label='avg. '+label)
             
     plt.ylabel(label.capitalize())
     plt.xlabel('Game')
@@ -69,7 +69,7 @@ def plotone(brackets, label, subplot1, subplot2, values=None, label2=None,
         plt.title('%s distribution, T=%s'%(label.capitalize(), brackets[0].T))
     else:
         plt.subplot(subplot2)
-        plt.plot(xrange(0,ntrials,step),values2[::step],'.',label=label2)
+        plt.plot(range(0,ntrials,step),values2[::step],'.',label=label2)
         plt.ylabel(label2.capitalize())
         plt.xlabel('Game')
         plt.title('%s over the trajectory, T=%s'%(label2.capitalize(),
