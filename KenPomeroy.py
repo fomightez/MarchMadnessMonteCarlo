@@ -18,9 +18,9 @@
 # Kentucky's Pyth and Navy's Pyth is
 # ratio = kpomdata["Kentucky"]["Pyth"]/kpomdata["Navy"]["Pyth"]
 
-import MarchMadnessMonteCarlo as MMMC
+import config
 
-if MMMC.__date__ == 2017:
+if config.date == 2017:
     text="""
 Strength of Schedule	NCSOS
 Rank	Team	Conf	W-L	AdjEM	AdjO	AdjD	AdjT	Luck	AdjEM	OppO	OppD	AdjEM
@@ -393,7 +393,7 @@ Rank	Team	Conf	W-L	AdjEM	AdjO	AdjD	AdjT	Luck	AdjEM	OppO	OppD	AdjEM
 351	Alabama A&M	SWAC	2-27	-30.22	91.6	341	121.8	350	63.8	322	-.075	327	-9.75	342	98.8	341	108.6	331	+1.48	120
 """
 
-elif MMMC.__date__ == 2015:
+elif config.date == 2015:
     text = """
 
 	Strength of Schedule	NCSOS
@@ -766,7 +766,7 @@ Rank	Team	Conf	W-L	Pyth	AdjO	AdjD	AdjT	Luck	Pyth	OppO	OppD	Pyth
 350	Florida A&M	MEAC	2-27	.0330	85.4	349	114.5	344	66.3	100	-.020	229	.3154	340	98.3	337	105.1	306	.4510	241
 351	Grambling St.	SWAC	2-27	.0160	79.9	351	114.3	343	65.5	132	-.078	328	.3266	336	98.4	333	104.8	286	.7895	3
         """
-elif MMMC.__date__ == 2013:
+elif config.date == 2013:
 
     text = """
 

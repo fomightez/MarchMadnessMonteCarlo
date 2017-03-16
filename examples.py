@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import MarchMadnessMonteCarlo as MMMC
-from MarchMadnessMonteCarlo import RankingsAndStrength as RAS
-regional_rankings = MMMC.regional_rankings
+import RankingsAndStrength as RAS
+import teams
+regional_rankings = teams.regional_rankings
 
 strength = RAS.kenpom['AdjEM']
 
