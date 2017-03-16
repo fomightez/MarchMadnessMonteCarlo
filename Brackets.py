@@ -19,7 +19,8 @@ from MarchMadnessMonteCarlo import Visualization, SimulationResults
 regional_rankings = MMMC.regional_rankings
 #strength = RAS.kenpom['Luck']
 #strength = RAS.sagarin['Rating']
-strength = RAS.kenpom['Pyth']
+#strength = RAS.kenpom['Pyth']
+strength = RAS.kenpom['AdjEM']
 
 #T = 0.5 # In units of epsilon/k
 #T = 2.5 # In units of epsilon/k
@@ -31,7 +32,8 @@ def default_energy_game(winner, loser):
     want the energy of an "expected" outcome to be lower than that of
     an upset.
     """
-    result = -(strength[winner]/strength[loser])
+    #result = -(strength[winner]/strength[loser])
+    result = -(strength[winner]-strength[loser])
     return result
 
 energy_game = default_energy_game

@@ -10,13 +10,17 @@ kenpom = {}
 for strength_type in KP.lineparts:
     kenpom[strength_type] = {}
     for team in MMMC.all_teams:
-        kenpom[strength_type][team] = KP.kpomdata[team][strength_type]
+        try:
+            kenpom[strength_type][team] = KP.kpomdata[team][strength_type]
+        except KeyError:
+            print("Can't find",team,"in",KP.kpomdata.keys())
+            raise
 
-
-sagarin = {}
-sagarin['Rating'] = {}
-sagarin['Rank'] = {}
-for team in MMMC.all_teams:
-    sagarin['Rating'][team] = JS.sagarindata[team]['Rating']
-    sagarin['Rank'][team] = JS.sagarindata[team]['Rank']
+if 0:
+    sagarin = {}
+    sagarin['Rating'] = {}
+    sagarin['Rank'] = {}
+    for team in MMMC.all_teams:
+        sagarin['Rating'][team] = JS.sagarindata[team]['Rating']
+        sagarin['Rank'][team] = JS.sagarindata[team]['Rank']
 

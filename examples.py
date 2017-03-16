@@ -3,7 +3,8 @@
 import MarchMadnessMonteCarlo as MMMC
 from MarchMadnessMonteCarlo import RankingsAndStrength as RAS
 regional_rankings = MMMC.regional_rankings
-strength = RAS.kenpom['Pyth']
+
+strength = RAS.kenpom['AdjEM']
 
 def default_energy_game(winner, loser):
     """This is where you'll input your own energy functions. Here are
@@ -22,6 +23,7 @@ def default_energy_game(winner, loser):
     return result
 
 def log5_energy_game(winner, loser):
+    strength = RAS.kenpom['Pyth']
     A,B = strength[winner],strength[loser]
     # see http://207.56.97.150/articles/playoff2002.htm
     win_pct = (A-A*B)/(A+B-2*A*B)
