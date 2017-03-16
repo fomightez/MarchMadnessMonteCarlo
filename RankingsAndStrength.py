@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 from __future__ import division
 from collections import OrderedDict
-import KenPomeroy as KP
-import JeffSagarin as JS
-import MarchMadnessMonteCarlo as MMMC
+import .KenPomeroy as KP
+import .JeffSagarin as JS
+import .MarchMadnessMonteCarlo as MMMC
 from numpy.random import random #import only one function from somewhere
 
 kenpom = {}
