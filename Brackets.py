@@ -33,8 +33,10 @@ def default_energy_game(winner, loser):
     an upset.
     """
     #result = -(strength[winner]/strength[loser])
-    result = -(strength[winner]-strength[loser])
+    result = -(strength[winner]-strength[loser])/200.0
     return result
+
+
 
 energy_game = default_energy_game
 

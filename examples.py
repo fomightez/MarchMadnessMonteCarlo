@@ -17,6 +17,7 @@ def default_energy_game(winner, loser):
     result = regional_rankings[winner] - regional_rankings[loser]
     result = regional_rankings[winner]/regional_rankings[loser]
     result = -(strength[winner]/strength[loser])
+    result = -(strength[winner]-strength[loser])/200.0
     #result = random()
     #result = color of team 1 jersey better than color of team 2 jersey
     #print "energy_game(",winner,loser,")",result
