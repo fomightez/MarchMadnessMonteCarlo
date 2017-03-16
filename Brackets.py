@@ -25,20 +25,8 @@ strength = RAS.kenpom['AdjEM']
 #T = 0.5 # In units of epsilon/k
 #T = 2.5 # In units of epsilon/k
 
-#@memoized
-def default_energy_game(winner, loser):
-    """This is where you'll input your own energy functions. Here are
-    some of the things we talked about in class. Remember that you
-    want the energy of an "expected" outcome to be lower than that of
-    an upset.
-    """
-    #result = -(strength[winner]/strength[loser])
-    result = -(strength[winner]-strength[loser])/200.0
-    return result
-
-
-
-energy_game = default_energy_game
+# Note: you must set this from MMMC
+energy_game = None
 
 #@memoized
 def energy_of_flipping(current_winner, current_loser):

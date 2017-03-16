@@ -10,7 +10,7 @@ Check out the blog post for a nice summary.
 """
 
 __date__ = 2017
-__version__ = 0.2
+__version__ = 0.3
 
 from collections import namedtuple
 SimulationResults = namedtuple('SimulationResults','brackets unique_brackets lowest_bracket lowest_bracket_count most_common_bracket most_common_bracket_count')
@@ -25,14 +25,16 @@ from numpy.random import random #import only one function from somewhere
 #from RankingsAndStrength import *
 #from RankingsAndStrength import teams
 
+default_energy_function = None
 def set_energy_function(ef):
+    global default_energy_function
+    default_energy_function = ef
     import Brackets as B
     if ef == 'default':
         B.energy_game = B.default_energy_game
     else:
         B.energy_game = ef
 
-        
 # Could be St. Mary's instead of Middle Tennessee
 # Could be Liberty instead of North Carolina A&T.
 teams = {}
@@ -120,3 +122,5 @@ teams['all'] = all_teams
 
 from Brackets import Bracket, simulate, runbracket1, runbracket2, playgame, maketable
 from Visualization import showstats
+import examples
+set_energy_function(examples.default_energy_game)

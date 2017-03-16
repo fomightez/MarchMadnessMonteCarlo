@@ -8,7 +8,8 @@ imp.reload(MMMC)
 teams = MMMC.teams['west']
 from MarchMadnessMonteCarlo import student2017
 from MarchMadnessMonteCarlo import Brackets
-ef = Brackets.default_energy_game
+from MarchMadnessMonteCarlo import examples
+ef = examples.default_energy_game
 ef = student2017.anmol_energy_game
 MMMC.set_energy_function(ef)
 
