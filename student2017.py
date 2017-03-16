@@ -6,6 +6,7 @@ from MarchMadnessMonteCarlo import RankingsAndStrength as RAS
 kpr = RAS.kenpom['Rank']
 adjo = RAS.kenpom['AdjO']
 adjem = RAS.kenpom['AdjEM']
+luck = RAS.kenpom['Luck']
 
 rank_arr1 = [['1', 'Gonzaga', '32', '1', '97'],
  ['2', 'UCLA', '28', '3', '90.3'],
@@ -214,7 +215,8 @@ def tyler_energy_game(winner, loser):
 def thad_energy_game(winner, loser):
     """Chance of team a + luck/ chance of team b plus its amount of luck>
     """
-    result = 0
+    result = (luck[winner] - luck[loser])
+    result = - result
     return result
 
 def atit_energy_game(winner, loser):
