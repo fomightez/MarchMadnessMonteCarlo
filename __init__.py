@@ -29,7 +29,8 @@ default_energy_function = None
 def set_energy_function(ef):
     global default_energy_function
     default_energy_function = ef
-    import .Brackets as B
+    from . import Brackets as B
+    #import Brackets as B
     if ef == 'default':
         B.energy_game = B.default_energy_game
     else:
@@ -122,5 +123,5 @@ teams['all'] = all_teams
 
 from .Brackets import Bracket, simulate, runbracket1, runbracket2, playgame, maketable
 from .Visualization import showstats
-import .examples
-set_energy_function(examples.default_energy_game)
+from .examples import default_energy_game
+set_energy_function(default_energy_game)

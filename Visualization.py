@@ -11,8 +11,6 @@ from time import sleep
 from copy import deepcopy
 from collections import Counter, OrderedDict
 
-import RankingsAndStrength as RAS
-
 
 def movingaverage(interval, window_size):
     window= ones(int(window_size))/float(window_size)
