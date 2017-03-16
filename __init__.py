@@ -80,7 +80,7 @@ elif __date__ == 2015:
                       'SMU','UCLA','Iowa St.','UAB',
                       'Iowa','Davidson','Gonzaga','North Dakota St.']
 elif __date__ == 2017:
-    teams['midwest'] = ['Kansas','N.C. Cent','Miami FL','Michigan St.',
+    teams['midwest'] = ['Kansas','UC Davis','Miami FL','Michigan St.',
                         'Iowa St.','Nevada','Purdue','Vermont',
                         'Creighton','Rhode Island','Oregon','Iona',
                         'Michigan','Oklahoma St.','Louisville','Jax. State']
@@ -90,7 +90,7 @@ elif __date__ == 2017:
                       'Dayton','Wichita St.','Kentucky','N. Kentucky']
     teams['east'] = ['Villanova',"Mt St Mary's",'Wisconsin','Va. Tech',
                      'Virginia','UNC Wilm.','Florida','ETSU',
-                     'SMU','Providence','Baylor','New Mex. St.',
+                     'SMU','USC','Baylor','New Mex. St.',
                      'S. Carolina','Marquette','Duke','Troy']
     teams['west'] = ['Gonzaga','S. Dak. St.','Northwestern','Vanderbilt',
                      'Notre Dame','Princeton','W. Virginia','Bucknell',

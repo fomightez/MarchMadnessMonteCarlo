@@ -7,7 +7,9 @@ import MarchMadnessMonteCarlo as MMMC
 imp.reload(MMMC)
 teams = MMMC.teams['west']
 from MarchMadnessMonteCarlo import student2017
-ef = student2017.alex_energy_game
+from MarchMadnessMonteCarlo import Brackets
+ef = Brackets.default_energy_game
+ef = student2017.anmol_energy_game
 MMMC.set_energy_function(ef)
 
 #print(student2017.anmol_map)
@@ -20,5 +22,5 @@ print(ef('Vermont','Kansas'))
 print(ef('Kansas','Vermont'))
 
 
-#b = MMMC.Bracket(teams=teams,T=0.5)
-#print (b)
+b = MMMC.Bracket(teams=teams,T=0.5)
+print (b)
