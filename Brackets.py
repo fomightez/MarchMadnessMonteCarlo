@@ -39,12 +39,12 @@ def energy_of_flipping(current_winner, current_loser):
 deltaU = energy_of_flipping
 
 # Here are the "magic functions" I mentioned to get pairs of teams.
-from itertools import zip_longest
+from itertools import izip_longest
 def grouper(n, iterable, fillvalue=None):
     "Collect data into fixed-length chunks or blocks"
     # grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx
     args = [iter(iterable)] * n
-    return zip_longest(fillvalue=fillvalue, *args)
+    return izip_longest(fillvalue=fillvalue, *args)
 
 def pairs(iterable):
     return grouper(2,iterable)
