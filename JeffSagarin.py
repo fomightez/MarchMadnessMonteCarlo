@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from __future__ import division
-import MarchMadnessMonteCarlo as MMMC
+import config
 
-if MMMC.__date__ == 2017:
+if config.date == 2017:
     lineparts = ["Rank","Team","Rating","W","L","Schedule","ScheduleRank","WinsVsTop25","LossesVsTop25","WinsVsTop50","LossesVsTop50",
                  "PREDICTOR","PREDICTOR_RANK",
                  "GOLDENMEAN_SCORE","GOLDENMEAN_RANK",
@@ -467,7 +467,7 @@ College Basketball 2016-2017          Div I games only    through games of 2017 
                 HOME ADVANTAGE=[  3.03]                                               [  3.03]       [  3.03]       [  3.03]
  351  Alabama A&M             =  48.83    2  27   63.18( 342)    0   0  |    0   0  |   48.88  351 |   48.72  351 |   48.56  351
 """
-elif MMMC.__date__ == 2015:
+elif config.date == 2015:
     lineparts = ["Rank","Team","Rating","W","L","Schedule","ScheduleRank","WinsVsTop25","LossesVsTop25","WinsVsTop50","LossesVsTop50","ELO_SCORE","ELO_RANK","PREDICTOR","PREDICTOR_RANK"]
     text = """                                RATING    W   L  SCHEDL(RANK) VS top 25 | VS top 50 | GOLDEN_MEAN  | PREDICTOR    | ELO_SCORE  
                 HOME ADVANTAGE=[  3.35]                                               [  3.25]       [  3.32]       [  3.50]
@@ -929,7 +929,7 @@ College Basketball 2014-2015    Div I games only  through games of 2015 March 16
  351  Grambling State         =  43.74    0  27   66.34( 343)    0   1  |    0   2  |   44.67  351 |   43.90  351 |   40.63  351
 """
 
-elif MMMC.__date__ == 2013:
+elif config.date == 2013:
 
     #http://usatoday30.usatoday.com/sports/sagarin/bkt1213.htm
     lineparts = ["Rank","Team","Rating","W","L","Schedule","ScheduleRank","WinsVsTop25","LossesVsTop25","WinsVsTop50","LossesVsTop50","ELO_SCORE","ELO_RANK","PREDICTOR","PREDICTOR_RANK"]

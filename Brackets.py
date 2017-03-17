@@ -11,38 +11,30 @@ from time import sleep
 from copy import deepcopy
 from collections import Counter, OrderedDict, defaultdict
 #from decorators import memoized
-import MarchMadnessMonteCarlo as MMMC
-from MarchMadnessMonteCarlo import RankingsAndStrength as RAS
-from MarchMadnessMonteCarlo import Visualization, SimulationResults
+import config
+import teams as _teams
+import RankingsAndStrength as RAS
+import Visualization
+from config import SimulationResults
 #from MarchMadnessMonteCarlo import Stats
 
-regional_rankings = MMMC.regional_rankings
+regional_rankings = _teams.regional_rankings
 #strength = RAS.kenpom['Luck']
 #strength = RAS.sagarin['Rating']
-strength = RAS.kenpom['Pyth']
+#strength = RAS.kenpom['Pyth']
+strength = RAS.kenpom['AdjEM']
 
 #T = 0.5 # In units of epsilon/k
 #T = 2.5 # In units of epsilon/k
 
-#@memoized
-def default_energy_game(winner, loser):
-    """This is where you'll input your own energy functions. Here are
-    some of the things we talked about in class. Remember that you
-    want the energy of an "expected" outcome to be lower than that of
-    an upset.
-    """
-    result = -(strength[winner]/strength[loser])
-    return result
-
-energy_game = default_energy_game
 
 #@memoized
 def energy_of_flipping(current_winner, current_loser):
     """Given the current winner and the current loser, this calculates
     the energy of swapping, i.e. having the current winner lose.
     """
-    return (energy_game(current_loser, current_winner) - 
-            energy_game(current_winner, current_loser))
+    return (config.default_energy_function(current_loser, current_winner) - 
+            config.default_energy_function(current_winner, current_loser))
 
 deltaU = energy_of_flipping
 
@@ -118,9 +110,9 @@ def bracket_energy(all_winners):
         winners = all_winners[i+1]
         for (team1, team2),winner in zip(games, winners):
             if winner == team1:
-                total_energy += energy_game(team1, team2)
+                total_energy += config.default_energy_function(team1, team2)
             else:
-                total_energy += energy_game(team2, team1)
+                total_energy += config.default_energy_function(team2, team1)
     return total_energy
 
 def getroundmap(bracket, include_game_number):
@@ -164,7 +156,7 @@ def simulate(ntrials, region, T, printonswap=False, printbrackets=True):
     if type(region)  in (type([]), type(())):
         teams = region[:]
     else:
-        teams = MMMC.teams[region]
+        teams = _teams.teams[region]
     b = Bracket(teams, T)
     energy = b.energy()
     ng = sum(b.games_in_rounds) # total number of games
@@ -360,8 +352,8 @@ def bracket_to_string(all_winners):
             team = i
         if include_rank:
             try:
-                region = MMMC.regions[i]
-                result = '%s (%s)'%(team,int(MMMC.regional_rankings[i]))
+                region = _teams.regions[i]
+                result = '%s (%s)'%(team,int(_teams.regional_rankings[i]))
             except KeyError:
                 result = '%s'%(team)
         return result
@@ -445,8 +437,8 @@ class Stats:
                 pct[team][r] = 100*counts[team][r]/nt1
             for r in ['Championship','Win']:
                 pct[team][r] = 100*counts[team][r]/nt2
-            pct[team]['Region'] = MMMC.regions[team]
-            pct[team]['Rank'] = int(MMMC.regional_rankings[team])
+            pct[team]['Region'] = teams.regions[team]
+            pct[team]['Rank'] = int(teams.regional_rankings[team])
         def tablekey(d):
             # gets teamname, pct
             return [d[1][i] for i in reversed(allrounds)]
